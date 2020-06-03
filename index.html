@@ -1,46 +1,76 @@
 <!DOCTYPE html>
-<html lang="hu">
+<html>
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hamburger Büfé</title>
+    <meta lang="hu">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>ÓRA</title>
+
+    <style>
+        
+    </style>
+
+    <link rel="stylesheet" href="css/index.css">
+
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script src="js/nevnapok.js"></script>
 </head>
 
 <body>
 
-    <ul>
-        <li><a href="/index.html">Home</a></li>
-        <li><a href="/pages/products.html">Products</a></li>
-        <li><a href="/pages/orders.html">Orders</a></li>
-        <li><a href="/about.html">About</a></li>
-    </ul>
+    <div class="container">
+        <div class="header">
+            PONTOS IDŐ
+        </div>
 
-    <h1>Fantastic Burgers</h1>
-    <ul>
-        <li>Meat lovers</li>
-        <ul>
-            <li>Beef</li>
-            <li>Pork</li>
-            <li>Turkey</li>
-        </ul>
-        <li>Vegetarian</li>
-        <li>Piedone</li>
-    </ul>
-    <h2>Step of order</h2>
-    <ol>
-        <li>Choose a Burger</li>
-        <li>By it</li>
-        <li>Give your address</li>
-        <li>Eat it</li>
-    </ol>
+        <div class="content">
+            <div id="clockbox" class="clock"></div>
+            <p class="nevnap">
+                <script>
+                    var ido = new Date()
+                    var ev = ido.getYear()
+                    if (ev < 2000) ev = ev + 1900
+                    var ho = ido.getMonth() + 1
+                    var nap = ido.getDate()
+                    document.write(havinev(ev, ho, nap));
+                </script>
+            </p>
+            
+        </div>
+        <div class="footer">
+            <div id="datebox"></div>
+        </div>
+    </div>
 
-    <a href="https://www.tasteofhome.com/recipes/barbecued-burgers/">Batrbecued Burgers</a>
-    <a href="pages/orders.html">Orders</a>
-    <a href="https://www.tasteofhome.com/recipes/barbecued-burgers/" target="blank">
-        <img src="img/burger.jpg" alt="Burger" width="100px">
-    </a>
 
+    <script type="text/javascript">
+        var tday = new Array("vasárnap", "hétfő", "kedd", "szerda", "csütörtök", "péntek", "szombat");
+        var tmonth = new Array("Január", "Február", "Március", "Április", "Május", "Június", "Július", "Augusztus", "Szeptember", "Október", "November", "December");
+
+        function GetClock() {
+            var d = new Date();
+            var nday = d.getDay(),
+                nmonth = d.getMonth(),
+                nyear = d.getYear() + 1900,
+                ndate = d.getDate();
+            var nhour = d.getHours(),
+                nmin = d.getMinutes(),
+                nsec = d.getSeconds();
+            if (nhour <= 9) nhour = "0" + nhour;
+            if (nmin <= 9) nmin = "0" + nmin;
+            if (nsec <= 9) nsec = "0" + nsec;
+            document.getElementById('clockbox').innerHTML = nhour + ":" + nmin + ":" + nsec;
+            document.getElementById('datebox').innerHTML = nyear + '. ' + tmonth[nmonth] + " " + ndate + ". " + tday[nday];
+        }
+
+        window.onload = function() {
+            GetClock();
+            setInterval(GetClock, 1000);
+        }
+    </script>
 </body>
 
 </html>

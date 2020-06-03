@@ -1,0 +1,96 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:400,500,500i,700,700i,900,900i&subset=latin-ext');
+
+.container > div {
+	justify-content: center;
+	align-items: center;
+}
+
+html, body {
+    font-family: 'Roboto', sans-serif;
+	box-sizing: border-box;
+	height: 100%;
+	padding: 0px;
+	margin: 0px;
+	font-weight: 700;
+    color: aliceblue;
+}
+
+.container {
+    margin-left: auto;
+    margin-right: auto;
+    height: 100%;
+    background-color: #000;
+    text-align: center;
+    display: grid;
+    grid-gap: 0px;
+    grid-template-columns: 12fr;
+    grid-auto-rows: 10vh auto 10vh;
+    grid-template-areas: "h h h h h h h h h h h h" 
+        "c c c c c c c c c c c c" 
+        "f f f f f f f f f f f f";
+}
+
+.header {
+    grid-area: h;
+    background-color: #222222;
+    padding-top: 2px;
+    letter-spacing: 5px;
+    font-size: 8vh;
+    text-shadow: 5px 5px 7px black;
+    color: #225522;
+    vertical-align: middle;
+    
+}
+
+
+.footer {
+    grid-area: f;
+    vertical-align: middle;
+    background-color: #222222;
+    padding-top: 5px;
+    letter-spacing: 5px;
+    font-size: 8vh;
+    text-shadow: 5px 5px 7px black;
+    color: #225522;
+    text-transform: uppercase;
+    
+}
+
+.content {
+    grid-area: c;
+    vertical-align: middle;
+    width: 100%;
+   
+}
+
+.clock {
+    margin-top: 5vh;
+    margin-left: auto;
+    font-size: 18vw;
+    font-weight: 1000;
+    margin-bottom: 0px;
+    text-shadow: 3px 3px 17px #055f05;
+    color: #0f640f;
+}
+
+p.nevnap {
+    margin-top: 0px;
+    margin-left: auto;
+    margin-bottom: 25px;
+    font-size: 7vw;
+    font-weight: 800;
+    text-shadow: 2px 2px 5px #549c54;
+    color: #1c4e1c;
+}
+.csengetes {
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 3.2vw;
+    color: rgba(67, 131, 8, 0.568);
+    text-shadow: 2px 2px 2px rgb(87, 155, 110);
+    width: 100%;
+
+}
+td {
+    margin: 10px;
+}
