@@ -19,7 +19,9 @@ html, body {
     margin-left: auto;
     margin-right: auto;
     height: 100%;
-    background-color: #000;
+    background-color: #111;
+    text-shadow: 5px 5px 10px black;
+    color: #0f640f;
     text-align: center;
     display: grid;
     grid-gap: 0px;
@@ -32,26 +34,21 @@ html, body {
 
 .header {
     grid-area: h;
-    background-color: #222222;
-    padding-top: 2px;
+    vertical-align: middle;
+    background-color: #333;
+    padding-top: 5px;
     letter-spacing: 5px;
     font-size: 8vh;
-    text-shadow: 5px 5px 7px black;
-    color: #225522;
-    vertical-align: middle;
-    
 }
 
 
 .footer {
     grid-area: f;
     vertical-align: middle;
-    background-color: #222222;
+    background-color: #333;
     padding-top: 5px;
     letter-spacing: 5px;
     font-size: 8vh;
-    text-shadow: 5px 5px 7px black;
-    color: #225522;
     text-transform: uppercase;
     
 }
@@ -64,33 +61,14 @@ html, body {
 }
 
 .clock {
-    margin-top: 5vh;
-    margin-left: auto;
-    font-size: 18vw;
+    padding-top: 1vw;
+    margin: auto;
+    font-size: 20vw;
     font-weight: 1000;
-    margin-bottom: 0px;
-    text-shadow: 3px 3px 17px #055f05;
-    color: #0f640f;
 }
 
 p.nevnap {
-    margin-top: 0px;
-    margin-left: auto;
-    margin-bottom: 25px;
-    font-size: 7vw;
+    margin: auto;
+    font-size: 8vw;
     font-weight: 800;
-    text-shadow: 2px 2px 5px #549c54;
-    color: #1c4e1c;
-}
-.csengetes {
-    margin-left: auto;
-    margin-right: auto;
-    font-size: 3.2vw;
-    color: rgba(67, 131, 8, 0.568);
-    text-shadow: 2px 2px 2px rgb(87, 155, 110);
-    width: 100%;
-
-}
-td {
-    margin: 10px;
 }
