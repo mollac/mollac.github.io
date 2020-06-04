@@ -19,7 +19,7 @@ html, body {
     margin-left: auto;
     margin-right: auto;
     height: 100%;
-    background-color: #111;
+    background-color: #131413;
     text-shadow: 5px 5px 10px black;
     color: #0f640f;
     text-align: center;
@@ -46,11 +46,10 @@ html, body {
     grid-area: f;
     vertical-align: middle;
     background-color: #333;
-    padding-top: 5px;
-    letter-spacing: 5px;
-    font-size: 8vh;
+    padding-top: 0px;
+    font-size: 6vh;
     text-transform: uppercase;
-    
+    margin-top: auto;
 }
 
 .content {
@@ -61,14 +60,13 @@ html, body {
 }
 
 .clock {
-    padding-top: 1vw;
     margin: auto;
     font-size: 20vw;
-    font-weight: 1000;
+    font-weight: 800;
 }
 
 p.nevnap {
     margin: auto;
-    font-size: 8vw;
+    font-size: 12vw;
     font-weight: 800;
 }
