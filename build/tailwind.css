@@ -328,16 +328,16 @@ html {
   height: 100vh;
 }
 
+.text-2xl {
+  font-size: 1.5rem;
+}
+
 .text-3xl {
   font-size: 1.875rem;
 }
 
-.text-5xl {
-  font-size: 3rem;
-}
-
-.text-8xl {
-  font-size: 8rem;
+.text-6xl {
+  font-size: 4rem;
 }
 
 .my-auto {
@@ -369,10 +369,29 @@ html {
   width: 100vw;
 }
 
+@media (min-width: 640px) {
+
+  .sm\:text-4xl {
+    font-size: 2.25rem;
+  }
+
+  .sm\:text-5xl {
+    font-size: 3rem;
+  }
+
+  .sm\:text-8xl {
+    font-size: 8rem;
+  }
+}
+
 @media (min-width: 768px) {
 
   .md\:text-5xl {
     font-size: 3rem;
+  }
+
+  .md\:tracking-wider {
+    letter-spacing: 0.05em;
   }
 }
 
@@ -380,10 +399,6 @@ html {
 
   .lg\:text-10xl {
     font-size: 10rem;
-  }
-
-  .lg\:tracking-wider {
-    letter-spacing: 0.05em;
   }
 
   .lg\:tracking-widest {
