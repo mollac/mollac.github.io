@@ -338,10 +338,6 @@ body {
   font-size: 1.5rem;
 }
 
-.text-3xl {
-  font-size: 1.875rem;
-}
-
 .text-6xl {
   font-size: 4rem;
 }
@@ -387,10 +383,6 @@ body {
     font-size: 2.25rem;
   }
 
-  .sm\:text-5xl {
-    font-size: 3rem;
-  }
-
   .sm\:text-8xl {
     font-size: 8rem;
   }
@@ -422,6 +414,10 @@ body {
 
   .xl\:text-6xl {
     font-size: 4rem;
+  }
+
+  .xl\:text-12xl {
+    font-size: 12rem;
   }
 
   .xl\:text-14xl {
