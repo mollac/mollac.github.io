@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta http-equiv="refresh" content="3600">
+
     <title>ÓRA</title>
     <link rel="stylesheet" href="build/tailwind.css">
     <script src="js/nevnapok.js"></script>
@@ -33,12 +33,20 @@
         var tday = new Array("vasárnap", "hétfő", "kedd", "szerda", "csütörtök", "péntek", "szombat");
         var tmonth = new Array("Január", "Február", "Március", "Április", "Május", "Június", "Július", "Augusztus", "Szeptember", "Október", "November", "December");
 
+        Date.prototype.getWeekNumber = function(){
+            var d = new Date(Date.UTC(this.getFullYear(), this.getMonth(), this.getDate()));
+            var dayNum = d.getUTCDay() || 7;
+            d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+            var yearStart = new Date(Date.UTC(d.getUTCFullYear(),0,1));
+        return Math.ceil((((d - yearStart) / 86400000) + 1)/7)
+};
         function GetClock() {
             var d = new Date();
             var nday = d.getDay(),
                 nmonth = d.getMonth(),
                 nyear = d.getYear() + 1900,
                 ndate = d.getDate();
+                nweek = d.getWeekNumber()
             var nhour = d.getHours(),
                 nmin = d.getMinutes(),
                 nsec = d.getSeconds();
@@ -46,7 +54,7 @@
             if (nmin <= 9) nmin = "0" + nmin;
             if (nsec <= 9) nsec = "0" + nsec;
             document.getElementById('clockbox').innerHTML = nhour + ":" + nmin + ":" + nsec;
-            document.getElementById('datebox').innerHTML = nyear + '. ' + tmonth[nmonth] + " " + ndate + ". " + tday[nday];
+            document.getElementById('datebox').innerHTML = nyear + '. ' + tmonth[nmonth] + " " + ndate + ". " + tday[nday]+" - " + nweek + ". hét";
         }
 
         window.onload = function () {
