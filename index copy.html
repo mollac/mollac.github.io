@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta lang="hu">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>ÓRA</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/nevnapok.js"></script>
+</head>
+
+<body class="text-shadow-sm">
+
+    <div class="h-screen w-screen bg-gray-900 flex flex-col text-gray-600 text-2xl sm:text-4xl md:text-5xl xl:text-6xl">
+        <div class="text-center font-semibold uppercase bg-gray-800 lg:tracking-widest">
+            PONTOS IDŐ
+        </div>
+        <div class="my-auto text-6xl sm:text-8xl lg:text-10xl xl:text-14xl font-semibold text-center self-center">
+            <span id="clockbox" class="text-gray-500 md:tracking-wider"></span>
+        </div>
+        <div id="nameday" class="my-auto text-6xl md:text-8xl lg:text-10xl font-semibold text-center text-gray-600"></div>
+
+        <div class="text-center font-semibold uppercase bg-gray-800 lg:tracking-widest">
+            <div id="datebox"></div>
+        </div>
+    </div>
+
+
+    <script type="text/javascript">
+        var tday = new Array("vasárnap", "hétfő", "kedd", "szerda", "csütörtök", "péntek", "szombat");
+        var tmonth = new Array("Január", "Február", "Március", "Április", "Május", "Június", "Július", "Augusztus", "Szeptember", "Október", "November", "December");
+
+        Date.prototype.getWeekNumber = function(){
+            var d = new Date(Date.UTC(this.getFullYear(), this.getMonth(), this.getDate()));
+            var dayNum = d.getUTCDay() || 7;
+            d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+            var yearStart = new Date(Date.UTC(d.getUTCFullYear(),0,1));
+        return Math.ceil((((d - yearStart) / 86400000) + 1)/7)
+};
+        function GetClock() {
+            var d = new Date();
+            var nday = d.getDay(),
+                nmonth = d.getMonth(),
+                nyear = d.getYear() + 1900,
+                ndate = d.getDate();
+                nweek = d.getWeekNumber()
+            var nhour = d.getHours(),
+                nmin = d.getMinutes(),
+                nsec = d.getSeconds();
+            if (nhour <= 9) nhour = "0" + nhour;
+            if (nmin <= 9) nmin = "0" + nmin;
+            if (nsec <= 9) nsec = "0" + nsec;
+            document.getElementById('clockbox').innerHTML = nhour + ":" + nmin + ":" + nsec;
+            document.getElementById('datebox').innerHTML = nyear + '. ' + tmonth[nmonth] + " " + ndate + ". " + tday[nday]+" - " + nweek + ". hét";
+        }
+
+        window.onload = function () {
+            GetClock();
+            var ido = new Date()
+            var ev = ido.getYear()
+            if (ev < 2000) ev = ev + 1900
+            var ho = ido.getMonth() + 1
+            var nap = ido.getDate()
+            document.getElementById('nameday').innerHTML = havinev(ev, ho, nap);
+
+            setInterval(GetClock, 1000);
+        }
+    </script>
+</body>
+
+</html>
