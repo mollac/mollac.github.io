@@ -6,7 +6,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta http-equiv="refresh" content="7200">
+    <meta http-equiv="refresh" content="1800">
+
     <title>ÓRA</title>
     <link rel="stylesheet" href="css/style.css">
     <script src="js/script.js"></script>
@@ -15,8 +16,8 @@
     <body>
     <div class="main">
         <div class="header">
-            <span>PONTOS IDŐ</span>
-            <span id="wtr"></span>
+            <div >💜💜💜</div>
+            <div id="wtr" class="wtr"></div>
         </div>
         <div class="data">
             <span id="clock-box" class="clock-box"></span>
@@ -53,7 +54,8 @@
             if (nsec <= 9) nsec = "0" + nsec;
             document.getElementById('clock-box').innerHTML = nhour + ":" + nmin + ":" + nsec;
             document.getElementById('footer').innerHTML =`
-            <div>${nyear}. ${tmonth[nmonth]} ${ndate}. ${tday[nday]}</div><div>${nweek}. hét</div>
+            <div>${nyear}. ${tmonth[nmonth].toLowerCase()} ${ndate}. ${tday[nday]}</div>
+            <div>${nweek}. hét</div>
             `;
         }
 
@@ -67,11 +69,8 @@
             document.getElementById('name-day').innerHTML = havinev(ev, ho, nap);
 
             setInterval(GetClock, 1000);
-
             getWeatherByLocation('Csorna');
         }
     </script>
-    
 </body>
-
 </html>

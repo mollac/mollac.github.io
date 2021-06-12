@@ -14,8 +14,9 @@ async function getWeatherByLocation(city) {
 function addWeatherToPage(data, where) {
     const temp = data.main.temp;
     const icon = data.weather[0].icon+".png"
-    where.innerHTML = `
-        <img src="https://openweathermap.org/img/w/${icon}"/><span>${Math.floor(temp)}°C</span>   
+    where.innerHTML += `
+        <img src="https://openweathermap.org/img/w/${icon}"/>
+        <span>${Math.floor(temp)}°C</span>   
         `;
 }
 

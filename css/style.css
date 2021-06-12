@@ -6,13 +6,15 @@
 body{
     margin: 0;
     font-family: 'Roboto', sans-serif;
-    display: flex;
-    align-items: center;
     justify-content: center;
     min-height: 100vh;
+    min-width: 100vw;
 }
 
 .main {  
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   text-align: center;
   color: rgb(166, 103, 230);
   background-color: rgb(52, 6, 63);
@@ -30,10 +32,8 @@ body{
   align-items: center;
   justify-content: space-between;
   background-color: rgb(39, 4, 48);
-  height: 5vh;
-  color: rgb(255, 255, 255);
-  width: 100%;
-  font-size: 4vh;
+  height: 7vh;
+  font-size: 4vw;
 }
 
 .data {
@@ -43,6 +43,20 @@ body{
   align-items: center;
   justify-content: center;
   flex: 1;
-  font-size: 18vh;
+  font-size: 22vw;
   text-shadow: 5px 5px 5px rgb(41, 2, 34);
+}
+
+#name-day {
+  font-size: 12vw;
+}
+
+.wtr {
+  display: flex;
+  align-items: center;
+}
+
+.wtr img {
+  width: 6vw;
+  height: 6vw;
 }
