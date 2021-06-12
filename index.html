@@ -6,20 +6,22 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
+    <meta http-equiv="refresh" content="7200">
     <title>ÓRA</title>
     <link rel="stylesheet" href="css/style.css">
+    <script src="js/script.js"></script>
     <script src="js/nevnapok.js"></script>
-</head>
 
-<body>
+    <body>
     <div class="main">
         <div class="header">
-            PONTOS IDŐ
+            <span>PONTOS IDŐ</span>
+            <span id="wtr"></span>
         </div>
         <div class="data">
             <span id="clock-box" class="clock-box"></span>
             <span id="name-day" class="name-day"></span>
+
         </div>
         <div class="footer" id="footer"></div>  
     </div>
@@ -65,8 +67,11 @@
             document.getElementById('name-day').innerHTML = havinev(ev, ho, nap);
 
             setInterval(GetClock, 1000);
+
+            getWeatherByLocation('Csorna');
         }
     </script>
+    
 </body>
 
 </html>
