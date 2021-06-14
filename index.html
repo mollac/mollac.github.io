@@ -52,7 +52,7 @@
             if (nhour <= 9) nhour = "0" + nhour;
             if (nmin <= 9) nmin = "0" + nmin;
             if (nsec <= 9) nsec = "0" + nsec;
-            document.getElementById('clock-box').innerHTML = nhour + ":" + nmin + ":" + nsec;
+            document.getElementById('clock-box').innerHTML = `${nhour}:${nmin}:${nsec}`;
             document.getElementById('footer').innerHTML =`
             <div>${nyear}. ${tmonth[nmonth].toLowerCase()} ${ndate}. ${tday[nday]}</div>
             <div>${nweek}. hét</div>
