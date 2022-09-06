@@ -65,6 +65,11 @@
             <div>${nyear}. ${tmonth[nmonth].toLowerCase()} ${ndate}. ${tday[nday]}</div>
             <div>${nweek}. hét</div>
             `;
+            if (checkInTime()) {
+                ora_van.innerHTML = 'Óra van!'
+            } else {
+                ora_van.innerHTML = ''
+            }
         }
 
         window.onload = function () {
@@ -79,11 +84,6 @@
 
             setInterval(GetClock, 1000);
             getWeatherByLocation('Csorna');
-            if (checkInTime()) {
-                ora_van.innerHTML = 'Óra van!'
-            } else {
-                ora_van.innerHTML = ''
-            }
         }
     </script>
 </body>

@@ -48,8 +48,7 @@ function checkInTime() {
         startTime.setMinutes(becsengetes[i][1])
         endTime.setHours(kicsengetes[i][0])
         endTime.setMinutes(kicsengetes[i][1])
-        if ((currentTime.getTime() > startTime.getTime()) && (currentTime.getTime() < endTime.getTime())) {
-            console.log('ÓRA van')
+        if ((currentTime.getTime() >= startTime.getTime()) && (currentTime.getTime() < endTime.getTime())) {
             return true;
         }
     }
