@@ -65,6 +65,7 @@
             <div>${nyear}. ${tmonth[nmonth].toLowerCase()} ${ndate}. ${tday[nday]}</div>
             <div>${nweek}. hét</div>
             `;
+            const ora_van = document.getElementById('ora_van');
             if (checkInTime()) {
                 ora_van.innerHTML = 'Óra van!'
             } else {
@@ -73,7 +74,6 @@
         }
 
         window.onload = function () {
-            const ora_van = document.getElementById('ora_van');
             GetClock();
             var ido = new Date()
             var ev = ido.getYear()
@@ -81,7 +81,6 @@
             var ho = ido.getMonth() + 1
             var nap = ido.getDate()
             document.getElementById('name-day').innerHTML = havinev(ev, ho, nap);
-
             setInterval(GetClock, 1000);
             getWeatherByLocation('Csorna');
         }
