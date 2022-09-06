@@ -28,7 +28,7 @@ function checkInTime() {
     [11, 45],
     [12, 40],
     [13, 35],
-    [14, 25]
+    [14, 20]
     ]
     const kicsengetes = [[8, 45],
     [9, 40],
@@ -37,7 +37,7 @@ function checkInTime() {
     [12, 30],
     [13, 25],
     [14, 15],
-    [15, 10]
+    [15, 5]
     ]
 
     var currentTime = new Date()
