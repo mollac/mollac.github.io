@@ -9,15 +9,17 @@
     <meta http-equiv="refresh" content="1800">
 
     <title>ÓRA</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+        integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="css/style.css">
     <script src="js/script.js"></script>
     <script src="js/nevnapok.js"></script>
 
-    <body>
+<body>
     <div class="main">
         <div class="header">
-            <div >
+            <div>
                 <i class="fas fa-heart"></i>
                 <i class="far fa-heart"></i>
                 <i class="fas fa-heart"></i>
@@ -25,23 +27,24 @@
             <div id="wtr" class="wtr"></div>
         </div>
         <div class="data">
+            <span id="ora_van">www</span>
             <span id="clock-box" class="clock-box"></span>
             <span id="name-day" class="name-day"></span>
 
         </div>
-        <div class="footer" id="footer"></div>  
+        <div class="footer" id="footer"></div>
     </div>
 
     <script type="text/javascript">
         var tday = new Array("vasárnap", "hétfő", "kedd", "szerda", "csütörtök", "péntek", "szombat");
         var tmonth = new Array("Január", "Február", "Március", "Április", "Május", "Június", "Július", "Augusztus", "Szeptember", "Október", "November", "December");
 
-        Date.prototype.getWeekNumber = function(){
+        Date.prototype.getWeekNumber = function () {
             var d = new Date(Date.UTC(this.getFullYear(), this.getMonth(), this.getDate()));
             var dayNum = d.getUTCDay() || 7;
             d.setUTCDate(d.getUTCDate() + 4 - dayNum);
-            var yearStart = new Date(Date.UTC(d.getUTCFullYear(),0,1));
-            return Math.ceil((((d - yearStart) / 86400000) + 1)/7)
+            var yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+            return Math.ceil((((d - yearStart) / 86400000) + 1) / 7)
         };
 
         function GetClock() {
@@ -50,7 +53,7 @@
                 nmonth = d.getMonth(),
                 nyear = d.getYear() + 1900,
                 ndate = d.getDate();
-                nweek = d.getWeekNumber()
+            nweek = d.getWeekNumber()
             var nhour = d.getHours(),
                 nmin = d.getMinutes(),
                 nsec = d.getSeconds();
@@ -58,13 +61,14 @@
             if (nmin <= 9) nmin = "0" + nmin;
             if (nsec <= 9) nsec = "0" + nsec;
             document.getElementById('clock-box').innerHTML = `${nhour}:${nmin}:${nsec}`;
-            document.getElementById('footer').innerHTML =`
+            document.getElementById('footer').innerHTML = `
             <div>${nyear}. ${tmonth[nmonth].toLowerCase()} ${ndate}. ${tday[nday]}</div>
             <div>${nweek}. hét</div>
             `;
         }
 
         window.onload = function () {
+            const ora_van = document.getElementById('ora_van');
             GetClock();
             var ido = new Date()
             var ev = ido.getYear()
@@ -75,7 +79,13 @@
 
             setInterval(GetClock, 1000);
             getWeatherByLocation('Csorna');
+            if (checkInTime()) {
+                ora_van.innerHTML = 'Óra van!'
+            } else {
+                ora_van.innerHTML = ''
+            }
         }
     </script>
 </body>
+
 </html>
