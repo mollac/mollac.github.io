@@ -20,7 +20,7 @@ function addWeatherToPage(data, where) {
         `;
 }
 
-function checkInTime() {
+function checkInTime(div) {
     const becsengetes = [[8, 0],
     [8, 55],
     [9, 50],
@@ -37,22 +37,27 @@ function checkInTime() {
     [12, 30],
     [13, 25],
     [14, 15],
-    [15, 5]
+    [15, 05]
     ]
 
     var currentTime = new Date()
     var startTime = new Date()
     var endTime = new Date()
+
+    const zeroPad = (num, places) => String(num).padStart(places, '0')
+
     for (var i = 0; i < kicsengetes.length; i++) {
         startTime.setHours(becsengetes[i][0])
         startTime.setMinutes(becsengetes[i][1])
         endTime.setHours(kicsengetes[i][0])
         endTime.setMinutes(kicsengetes[i][1])
         if ((currentTime.getTime() >= startTime.getTime()) && (currentTime.getTime() < endTime.getTime())) {
-            return true;
+            div.innerHTML = `${i + 1}. óra: ${zeroPad(becsengetes[i][0], 2)}:${zeroPad(becsengetes[i][1], 2)} - ${zeroPad(kicsengetes[i][0], 2)}:${zeroPad(kicsengetes[i][1], 2)}`
+            return
         }
     }
-    return false;
+    div.innerHTML = "😍 szünet 😍"
+    return
 }
 
 

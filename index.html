@@ -66,11 +66,7 @@
             <div>${nweek}. hét</div>
             `;
             const ora_van = document.getElementById('ora_van');
-            if (checkInTime()) {
-                ora_van.innerHTML = 'Óra van!'
-            } else {
-                ora_van.innerHTML = ''
-            }
+            checkInTime(ora_van)
         }
 
         window.onload = function () {
