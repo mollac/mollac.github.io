@@ -27,7 +27,7 @@ function checkInTime(div) {
     [10, 50],
     [11, 45],
     [12, 40],
-    [13, 35],
+    [13, 30],
     [14, 20]
     ]
     const kicsengetes = [[8, 45],
