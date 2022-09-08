@@ -56,7 +56,7 @@ function checkInTime(div) {
             return
         }
     }
-    div.innerHTML = "🍑🍒🍓"
+    div.innerHTML = ""
     return
 }
 
