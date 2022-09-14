@@ -17,8 +17,8 @@ body {
   flex-direction: column;
   justify-content: center;
   text-align: center;
-  color: rgb(166, 103, 230);
-  background-color: rgb(52, 6, 63);
+  color: #aee653;
+  background-color: #317286;
   position: fixed;
   top: 0;
   left: 0;
@@ -33,7 +33,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: rgb(39, 4, 48);
+  background-color: #204955;
   height: 7vh;
   font-size: 3vw;
 }
@@ -64,6 +64,6 @@ body {
 }
 
 #ora_van {
-  font-size: 5vw;
-  color: rgb(152, 152, 203);
+  font-size: 6vw;
+  color: #8C271E;
 }
