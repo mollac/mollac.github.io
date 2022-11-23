@@ -17,8 +17,8 @@ body {
   flex-direction: column;
   justify-content: center;
   text-align: center;
-  color: #aee653;
-  background-color: #317286;
+  color: rgb(143, 206, 98);
+  background-color: #245361;
   position: fixed;
   top: 0;
   left: 0;
@@ -33,7 +33,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: #204955;
+  background-color: #142e35;
   height: 7vh;
   font-size: 3vw;
 }
@@ -45,12 +45,24 @@ body {
   align-items: center;
   justify-content: center;
   flex: 1;
-  font-size: 22vw;
-  text-shadow: 5px 5px 5px rgb(41, 2, 34);
+  font-size: 12vw;
+  text-shadow: 5px 5px 10px rgb(41, 2, 34);
+}
+
+#ora_van {
+  font-size: 6vw;
+  color: #aaa;
+}
+
+#clock-box {
+  margin-top: 1vw;
+  margin-bottom: 1vw;
+  font-size: 20vw;
 }
 
 #name-day {
-  font-size: 12vw;
+  font-size: 6vw;
+  color: #aaa;
 }
 
 .wtr {
@@ -61,9 +73,4 @@ body {
 .wtr img {
   width: 6vw;
   height: 6vw;
-}
-
-#ora_van {
-  font-size: 6vw;
-  color: #e9a49e;
 }
