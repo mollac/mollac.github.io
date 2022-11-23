@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto:400,500,500i,700,700i,900,900i&subset=latin-ext');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@600&family=Oxanium:wght@700&family=Wallpoet&display=swap');
 
 * {
   box-sizing: border-box;
@@ -7,6 +8,7 @@
 body {
   margin: 0;
   font-family: 'Roboto', sans-serif;
+  font-family: 'JetBrains Mono', monospace;
   justify-content: center;
   min-height: 100vh;
   min-width: 100vw;
@@ -55,6 +57,7 @@ body {
 }
 
 #clock-box {
+  font-family: 'JetBrains Mono', monospace;
   margin-top: 1vw;
   margin-bottom: 1vw;
   font-size: 20vw;
