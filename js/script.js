@@ -23,7 +23,7 @@ function addWeatherToPage(data, where) {
 function checkInTime(div) {
     const becsengetes = [[8, 0],
     [8, 55],
-    [9, 55],
+    [9, 50],
     [10, 50],
     [11, 45],
     [12, 40],
