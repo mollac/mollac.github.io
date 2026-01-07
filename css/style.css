@@ -47,12 +47,12 @@ body {
   align-items: center;
   justify-content: center;
   flex: 1;
-  font-size: 12vw;
+  font-size: 10vw;
   text-shadow: 5px 5px 10px rgb(41, 2, 34);
 }
 
 #ora_van {
-  font-size: 6vw;
+  font-size: 4vw;
   color: #aaa;
 }
 
@@ -64,7 +64,7 @@ body {
 }
 
 #name-day {
-  font-size: 6vw;
+  font-size: 3vw;
   color: #aaa;
 }
 
