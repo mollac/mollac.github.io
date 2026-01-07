@@ -13,6 +13,107 @@
         integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="css/style.css">
+    <style>
+        .analog-clock {
+            width: 55vh;
+            height: 55vh;
+            background-color: rgb(40, 87, 101);
+            color: #898989;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            border-radius: 50%;
+            position: relative;
+            margin: 20px auto;
+        }
+
+        .hand {
+            width: 50%;
+            height: 4px;
+            background: currentColor;
+            position: absolute;
+            top: 50%;
+            transform-origin: 100%;
+            transform: rotate(90deg);
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            z-index: 5;
+        }
+
+        .hour-hand {
+            width: 30%;
+            left: 20%;
+        }
+
+        .min-hand {
+            width: 45%;
+            left: 5%;
+        }
+
+        .second-hand {
+            width: 60%;
+            height: 1px;
+            left: 0;
+            transform-origin: 83.33%;
+            background: rgb(177, 31, 31);
+        }
+
+        .number {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transform: rotate(var(--rotation));
+            font-size: 2rem;
+            padding: 35px;
+            z-index: 2;
+        }
+
+        .number span {
+            display: block;
+            transform: rotate(calc(var(--rotation) * -1));
+        }
+
+        .center-point {
+            width: 20px;
+            height: 20px;
+            background-color: #ffffff;
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .dial-line {
+            position: absolute;
+            width: 2px;
+            height: 100%;
+            left: 50%;
+            margin-left: -1px;
+            top: 0;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .dial-line::after {
+            content: '';
+            position: absolute;
+            top: 5px;
+            left: 0;
+            width: 2px;
+            height: 10px;
+            background: #ccc;
+            border-radius: 2px;
+        }
+
+        .dial-line.major::after {
+            height: 15px;
+            background: #333;
+            width: 4px;
+            left: -1px;
+        }
+    </style>
     <script src="js/script.js"></script>
     <script src="js/nevnapok.js"></script>
 
@@ -28,7 +129,24 @@
         </div>
         <div class="data">
             <span id="ora_van">www</span>
-            <span id="clock-box" class="clock-box"></span>
+            <div id="clock-box" class="clock-box analog-clock">
+                <div class="hand hour-hand"></div>
+                <div class="hand min-hand"></div>
+                <div class="hand second-hand"></div>
+                <div class="center-point"></div>
+                <div class="number" style="--rotation: 30deg;"><span>1</span></div>
+                <div class="number" style="--rotation: 60deg;"><span>2</span></div>
+                <div class="number" style="--rotation: 90deg;"><span>3</span></div>
+                <div class="number" style="--rotation: 120deg;"><span>4</span></div>
+                <div class="number" style="--rotation: 150deg;"><span>5</span></div>
+                <div class="number" style="--rotation: 180deg;"><span>6</span></div>
+                <div class="number" style="--rotation: 210deg;"><span>7</span></div>
+                <div class="number" style="--rotation: 240deg;"><span>8</span></div>
+                <div class="number" style="--rotation: 270deg;"><span>9</span></div>
+                <div class="number" style="--rotation: 300deg;"><span>10</span></div>
+                <div class="number" style="--rotation: 330deg;"><span>11</span></div>
+                <div class="number" style="--rotation: 0deg;"><span>12</span></div>
+            </div>
             <span id="name-day" class="name-day"></span>
 
         </div>
@@ -57,10 +175,14 @@
             var nhour = d.getHours(),
                 nmin = d.getMinutes(),
                 nsec = d.getSeconds();
-            if (nhour <= 9) nhour = "0" + nhour;
-            if (nmin <= 9) nmin = "0" + nmin;
-            if (nsec <= 9) nsec = "0" + nsec;
-            document.getElementById('clock-box').innerHTML = `${nhour}:${nmin}:${nsec}`;
+
+            const secondsDegrees = ((nsec / 60) * 360) + 90;
+            const minsDegrees = ((nmin / 60) * 360) + ((nsec / 60) * 6) + 90;
+            const hourDegrees = ((nhour / 12) * 360) + ((nmin / 60) * 30) + 90;
+            document.querySelector('.second-hand').style.transform = `rotate(${secondsDegrees}deg)`;
+            document.querySelector('.min-hand').style.transform = `rotate(${minsDegrees}deg)`;
+            document.querySelector('.hour-hand').style.transform = `rotate(${hourDegrees}deg)`;
+
             document.getElementById('footer').innerHTML = `
             <div>${nyear}. ${tmonth[nmonth].toLowerCase()} ${ndate}. ${tday[nday]}</div>
             <div>${nweek}. hét</div>
@@ -79,6 +201,14 @@
             document.getElementById('name-day').innerHTML = havinev(ev, ho, nap);
             setInterval(GetClock, 1000);
             getWeatherByLocation('Csorna');
+
+            const clockBox = document.getElementById('clock-box');
+            for (let i = 0; i < 60; i++) {
+                const line = document.createElement('div');
+                line.className = 'dial-line' + (i % 5 === 0 ? ' major' : '');
+                line.style.transform = `rotate(${i * 6}deg)`;
+                clockBox.appendChild(line);
+            }
         }
     </script>
 </body>
