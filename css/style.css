@@ -20,7 +20,7 @@ body {
   justify-content: center;
   text-align: center;
   color: rgb(143, 206, 98);
-  background-color: #245361;
+  background-color: #153c45;
   position: fixed;
   top: 0;
   left: 0;
@@ -35,7 +35,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: #142e35;
+  background-color: #052129;
   height: 7vh;
   font-size: 3vw;
 }
