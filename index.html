@@ -190,7 +190,7 @@
             const ora_van = document.getElementById('ora_van');
             checkInTime(ora_van)
         }
-
+        
         window.onload = function () {
             GetClock();
             var ido = new Date()
@@ -198,10 +198,10 @@
             if (ev < 2000) ev = ev + 1900
             var ho = ido.getMonth() + 1
             var nap = ido.getDate()
-            document.getElementById('name-day').innerHTML = havinev(ev, ho, nap);
             setInterval(GetClock, 1000);
             getWeatherByLocation('Csorna');
-
+            
+            document.getElementById('name-day').innerHTML = havinev(ev, ho, nap);
             const clockBox = document.getElementById('clock-box');
             for (let i = 0; i < 60; i++) {
                 const line = document.createElement('div');
