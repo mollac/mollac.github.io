@@ -1,0 +1,1217 @@
+<!DOCTYPE html>
+<html lang="hu">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FLIP CLOCK</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Roboto Mono', monospace !important;
+        }
+
+        body {
+            background: linear-gradient(135deg, #2c2c2c 0%, #1a1a1a 100%);
+            min-height: 100vh;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            transition: background 1s ease;
+            text-transform: uppercase;
+        }
+
+        .weather-bar {
+            padding: clamp(15px, 12px + 1vw, 30px);
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .weather-icon {
+            width: clamp(36px, 30px + 1.8vw, 64px);
+            height: clamp(36px, 30px + 1.8vw, 64px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: clamp(24px, 20px + 1vw, 40px);
+        }
+
+        .weather-temp {
+            font-size: clamp(22px, 17px + 1.3vw, 42px);
+            font-weight: bold;
+        }
+
+        .weather-desc {
+            font-size: clamp(18px, 15px + 1vw, 32px);
+        }
+
+        .clock-section {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .clock-wrapper {
+            background: linear-gradient(145deg, #3a3a3a, #2a2a2a);
+            padding: 2vmin 3vmin;
+            border-radius: 30px;
+            box-shadow:
+                0 20px 60px rgba(0, 0, 0, 0.8),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            border: 3px solid #1a1a1a;
+        }
+
+        .clock-container {
+            display: flex;
+            gap: 2vmin;
+            align-items: center;
+        }
+
+        .flip-unit {
+            position: relative;
+            width: min(19vw, 45vh);
+            height: calc(min(19vw, 45vh) * 1.4);
+            perspective: 1000px;
+        }
+
+        .digit {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: calc(min(19vw, 45vh) * 0.8);
+            line-height: 1;
+            font-weight: 700;
+            color: var(--digit-color, #ffffff);
+            background: linear-gradient(180deg, #4a4a4a 0%, #3a3a3a 50%, #2a2a2a 50%, #1a1a1a 100%);
+            border-radius: 20px;
+            box-shadow:
+                0 5px 15px rgba(0, 0, 0, 0.5),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+            border: 2px solid #0a0a0a;
+        }
+
+        /* Felső fél */
+        .digit::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 50%;
+            top: 0;
+            left: 0;
+            background: linear-gradient(to bottom, rgba(80, 80, 80, 0.2) 0%, rgba(0, 0, 0, 0) 100%);
+            z-index: 1;
+        }
+
+        /* Középső vágás */
+        .digit::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 4px;
+            background: #0a0a0a;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+            z-index: 10;
+            box-shadow:
+                0 2px 4px rgba(0, 0, 0, 0.8),
+                inset 0 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Oldalsó tartók */
+        .flip-unit::before,
+        .flip-unit::after {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 20px;
+            background: linear-gradient(90deg, #1a1a1a 0%, #2a2a2a 50%, #1a1a1a 100%);
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 20;
+            border-radius: 2px;
+            box-shadow:
+                inset 0 1px 2px rgba(0, 0, 0, 0.5),
+                0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        .flip-unit::before {
+            left: -4px;
+        }
+
+        .flip-unit::after {
+            right: -4px;
+        }
+
+        .flip-card {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            transition: transform 0.6s;
+        }
+
+        .flip-card.flipping {
+            animation: flip 0.6s ease-in-out;
+        }
+
+        @keyframes flip {
+            0% {
+                transform: rotateX(0deg);
+            }
+
+            100% {
+                transform: rotateX(-180deg);
+            }
+        }
+
+        .separator {
+            font-size: calc(min(19vw, 45vh) * 0.8);
+            line-height: 1;
+            font-weight: 700;
+            margin: 0 1vmin;
+            color: var(--digit-color, #ffffff);
+            text-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            animation: blink 1s step-start infinite;
+        }
+
+        @keyframes blink {
+
+            0%,
+            49% {
+                opacity: 1;
+            }
+
+            50%,
+            100% {
+                opacity: 0;
+            }
+        }
+
+        .status-bar {
+            padding: clamp(15px, 12px + 1vw, 30px);
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .bottom-row {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: center;
+            width: 100%;
+        }
+
+        .date-info {
+            font-size: clamp(18px, 15px + 1vw, 32px);
+            text-align: left;
+        }
+
+        .day-name-info {
+            font-size: clamp(22px, 17px + 1.3vw, 42px);
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .nameday-info {
+            font-size: clamp(18px, 15px + 1vw, 32px);
+            text-align: right;
+        }
+
+        .countdown-info {
+            font-size: clamp(18px, 15px + 1vw, 32px);
+            font-weight: bold;
+            margin-bottom: 0;
+            color: var(--digit-color, #ffffff);
+        }
+
+        .next-class-info {
+            font-size: clamp(18px, 15px + 1vw, 32px);
+            font-weight: bold;
+            margin-bottom: 0;
+            color: var(--digit-color, #ffffff);
+        }
+
+        /* Tablet és kisebb */
+        @media (max-width: 992px) {
+            .clock-wrapper {
+                padding: 2vmin;
+            }
+
+            .flip-unit {}
+
+            .digit {}
+
+            .digit::after {
+                height: 3px;
+            }
+
+            .flip-unit::before,
+            .flip-unit::after {
+                width: 6px;
+                height: 16px;
+            }
+
+            .separator {}
+
+        }
+
+        /* Mobil */
+        @media (max-width: 576px) {
+            .clock-wrapper {
+                border-radius: 20px;
+            }
+
+            .flip-unit {}
+
+            .digit {
+                border-radius: 12px;
+            }
+
+            .digit::after {
+                height: 2px;
+            }
+
+            .flip-unit::before,
+            .flip-unit::after {
+                width: 4px;
+                height: 12px;
+            }
+
+            .separator {}
+
+            .clock-container {
+                gap: 1vmin;
+            }
+        }
+
+        /* Nagyon kicsi mobil */
+        @media (max-width: 380px) {
+            .flip-unit {}
+
+            .digit {}
+
+            .separator {}
+
+        }
+
+        .fullscreen-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: white;
+            font-size: 24px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s;
+        }
+
+        .fullscreen-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .settings-btn {
+            position: fixed;
+            top: 20px;
+            left: 80px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: white;
+            font-size: 24px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s, transform 0.5s ease;
+        }
+
+        .settings-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(180deg);
+        }
+
+        .clock-mode-btn {
+            top: 20px;
+            left: 140px;
+        }
+
+        .settings-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .settings-panel {
+            background: #2a2a2a;
+            padding: 25px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 80vh;
+            overflow-y: auto;
+            border: 1px solid #444;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .schedule-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 10px;
+            border-radius: 10px;
+        }
+
+        .schedule-row input {
+            background: #444;
+            border: 1px solid #555;
+            color: white;
+            padding: 5px;
+            border-radius: 5px;
+        }
+
+        .btn {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .btn:hover {
+            opacity: 0.8;
+        }
+
+        .btn-primary {
+            background: #4caf50;
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #666;
+            color: white;
+        }
+
+        .btn-danger {
+            background: #ff4444;
+            color: white;
+        }
+
+        /* Analog Clock Styles */
+        .analog-clock-wrapper {
+            display: none;
+            width: min(80vw, 63vh);
+            height: min(80vw, 63vh);
+            background: radial-gradient(circle at 30% 30%, #ffffff, #d0d0d0);
+            border-radius: 50%;
+            box-shadow:
+                0 30px 60px rgba(0, 0, 0, 0.6),
+                inset 0 0 20px rgba(0, 0, 0, 0.1),
+                inset 10px 10px 20px rgba(255, 255, 255, 0.8),
+                inset -5px -5px 15px rgba(0, 0, 0, 0.1);
+            border: 8px solid #333;
+            position: relative;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.5s ease, border-color 0.5s ease;
+        }
+
+        .analog-clock-wrapper.dark-theme {
+            background: radial-gradient(circle at 30% 30%, #3a3a3a, #1a1a1a);
+            border-color: #111;
+            box-shadow:
+                0 30px 60px rgba(0, 0, 0, 0.8),
+                inset 0 0 20px rgba(0, 0, 0, 0.5),
+                inset 5px 5px 10px rgba(255, 255, 255, 0.1);
+        }
+
+        .analog-clock-wrapper.dark-theme .hour-hand,
+        .analog-clock-wrapper.dark-theme .minute-hand,
+        .analog-clock-wrapper.dark-theme .center-dot,
+        .analog-clock-wrapper.dark-theme .marker::after {
+            background: white;
+        }
+
+        .analog-clock-wrapper.dark-theme .marker.minute::after {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .analog-clock-wrapper.dark-theme .clock-number {
+            color: white;
+        }
+
+        .analog-clock {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .hand {
+            position: absolute;
+            bottom: 50%;
+            left: 50%;
+            transform-origin: bottom center;
+            border-radius: 4px;
+            z-index: 10;
+            transform: translateX(-50%);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+        }
+
+        .hour-hand {
+            width: 8px;
+            height: 25%;
+            background: black;
+            z-index: 11;
+        }
+
+        .minute-hand {
+            width: 4px;
+            height: 35%;
+            background: black;
+            z-index: 12;
+        }
+
+        .second-hand {
+            width: 2px;
+            height: 48%;
+            background: #ff0000;
+            z-index: 13;
+        }
+
+        .center-dot {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 16px;
+            height: 16px;
+            background: black;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 14;
+        }
+
+        .marker {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 50%;
+            width: 0;
+            transform-origin: bottom center;
+        }
+
+        .marker::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            background: black;
+        }
+
+        .marker.hour::after {
+            width: 4px;
+            height: 20px;
+        }
+
+        .marker.minute::after {
+            width: 2px;
+            height: 10px;
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .clock-number {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: clamp(14px, 2.5vmin, 24px);
+            font-weight: bold;
+            color: black;
+            transform: translate(-50%, -50%);
+            z-index: 5;
+        }
+    </style>
+</head>
+
+<body>
+    <button id="fullscreenBtn" class="fullscreen-btn" title="Teljes képernyő">⛶</button>
+    <button id="settingsBtn" class="settings-btn" title="Beállítások">⚙️</button>
+    <button id="clockModeBtn" class="settings-btn clock-mode-btn" title="Óra mód váltása">🕒</button>
+
+    <div id="settingsOverlay" class="settings-overlay">
+        <div class="settings-panel">
+            <h3 style="margin-bottom: 20px;">Csengetési rend</h3>
+            <div
+                style="margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 10px;">
+                <span>Analóg óra sötét téma</span>
+                <input type="checkbox" id="analogThemeToggle" onchange="toggleAnalogTheme()"
+                    style="width: 20px; height: 20px; cursor: pointer;">
+            </div>
+            <div
+                style="margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 10px;">
+                <span>Analóg óra hang (Tik-Tak)</span>
+                <input type="checkbox" id="analogSoundToggle" onchange="toggleAnalogSound()"
+                    style="width: 20px; height: 20px; cursor: pointer;">
+            </div>
+            <div id="scheduleList"></div>
+            <div style="margin-top: 20px; display: flex; gap: 10px; justify-content: space-between;">
+                <button class="btn btn-secondary" onclick="addPeriod()">+ Új óra</button>
+                <div style="display: flex; gap: 10px;">
+                    <button class="btn btn-secondary" onclick="closeSettings()">Mégse</button>
+                    <button class="btn btn-primary" onclick="saveSettings()">Mentés</button>
+                </div>
+            </div>
+            <div style="margin-top: 20px; text-align: center; display: flex; gap: 10px; justify-content: center;">
+                <button class="btn btn-secondary" onclick="setShortSchedule()"
+                    style="font-size: 12px; padding: 5px 10px;">Rövidített rend</button>
+                <button class="btn btn-danger" onclick="resetSettings()"
+                    style="font-size: 12px; padding: 5px 10px;">Alaphelyzet</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="weather-bar">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+                <div style="flex: 1;"></div>
+                <div class="d-flex align-items-center justify-content-center gap-3" style="flex: 1;">
+                    <div>
+                        <span class="weather-icon" id="weatherIcon">⏳</span>
+                    </div>
+                    <div>
+                        <span class="weather-temp" id="temperature">-- °C</span>
+                    </div>
+                    <div>
+                        <span class="weather-desc" id="weatherDesc"></span>
+                    </div>
+                </div>
+                <div style="flex: 1; text-align: right;">
+                    <div class="countdown-info" id="countdown"></div>
+                    <div class="next-class-info" id="nextClass"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="clock-section">
+        <div class="clock-wrapper" id="flipClockWrapper">
+            <div class="clock-container">
+                <div class="flip-unit">
+                    <div class="digit" id="hour1">0</div>
+                </div>
+                <div class="flip-unit">
+                    <div class="digit" id="hour2">0</div>
+                </div>
+                <div class="separator">:</div>
+                <div class="flip-unit">
+                    <div class="digit" id="min1">0</div>
+                </div>
+                <div class="flip-unit">
+                    <div class="digit" id="min2">0</div>
+                </div>
+            </div>
+        </div>
+        <div class="analog-clock-wrapper" id="analogClockWrapper">
+            <div class="analog-clock" id="analogClock">
+                <div class="hand hour-hand" id="analogHour"></div>
+                <div class="hand minute-hand" id="analogMin"></div>
+                <div class="hand second-hand" id="analogSec"></div>
+                <div class="center-dot"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="status-bar">
+        <div class="container text-center">
+            <div class="bottom-row">
+                <div class="date-info" id="dateInfo"></div>
+                <div class="day-name-info" id="dayNameInfo"></div>
+                <div class="nameday-info" id="nameDay"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const namedays = {
+            '01-01': 'Fruzsina', '01-02': 'Ábel', '01-03': 'Genovéva, Benjámin', '01-04': 'Titusz, Leona', '01-05': 'Simon',
+            '01-06': 'Boldizsár', '01-07': 'Attila, Ramona', '01-08': 'Gyöngyvér', '01-09': 'Marcell', '01-10': 'Melánia',
+            '01-11': 'Ágota', '01-12': 'Ernő', '01-13': 'Veronika', '01-14': 'Bódog', '01-15': 'Lóránt, Lóránd',
+            '01-16': 'Gusztáv', '01-17': 'Antal, Antónia', '01-18': 'Piroska', '01-19': 'Sára, Márió', '01-20': 'Fábián, Sebestyén',
+            '01-21': 'Ágnes', '01-22': 'Vince, Artúr', '01-23': 'Zelma, Rajmund', '01-24': 'Timea', '01-25': 'Pál',
+            '01-26': 'Paula, Vanda', '01-27': 'Angelika', '01-28': 'Károly, Karola', '01-29': 'Adél', '01-30': 'Martina, Gerda',
+            '01-31': 'Marcella',
+            '02-01': 'Ignác', '02-02': 'Karolina, Aida', '02-03': 'Balázs', '02-04': 'Ráhel, Csenge', '02-05': 'Ágota, Ingrid',
+            '02-06': 'Dóra, Dorottya', '02-07': 'Tódor, Rómeó', '02-08': 'Aranka', '02-09': 'Abigél, Alex', '02-10': 'Elvira',
+            '02-11': 'Bertold, Marietta', '02-12': 'Lídia, Lívia', '02-13': 'Ella, Linda', '02-14': 'Bálint, Valentin', '02-15': 'Kolos, Georgina',
+            '02-16': 'Julianna, Lilla', '02-17': 'Donát', '02-18': 'Bernadett', '02-19': 'Zsuzsanna', '02-20': 'Aladár, Álmos',
+            '02-21': 'Eleonóra', '02-22': 'Gerzson', '02-23': 'Alfréd', '02-24': 'Mátyás', '02-25': 'Géza',
+            '02-26': 'Edina', '02-27': 'Ákos, Bátor', '02-28': 'Elemér', '02-29': 'Oszkár',
+            '03-01': 'Albin', '03-02': 'Lujza', '03-03': 'Kornélia', '03-04': 'Kázmér', '03-05': 'Adorján, Adrián',
+            '03-06': 'Leonóra, Inez', '03-07': 'Tamás', '03-08': 'Zoltán', '03-09': 'Franciska, Fanni', '03-10': 'Ildikó',
+            '03-11': 'Szilárd', '03-12': 'Gergely', '03-13': 'Krisztián, Ajtony', '03-14': 'Matilda', '03-15': 'Kristóf',
+            '03-16': 'Henrietta', '03-17': 'Gertrúd, Patrik', '03-18': 'Sándor, Ede', '03-19': 'József, Bánk', '03-20': 'Klaudia',
+            '03-21': 'Benedek', '03-22': 'Beáta, Izolda', '03-23': 'Emőke', '03-24': 'Gábor, Karina', '03-25': 'Irén, Irisz',
+            '03-26': 'Emánuel', '03-27': 'Hajnalka', '03-28': 'Gedeon, Johanna', '03-29': 'Auguszta', '03-30': 'Zalán', '03-31': 'Árpád',
+            '04-01': 'Hugó', '04-02': 'Áron', '04-03': 'Buda, Richárd', '04-04': 'Izidor', '04-05': 'Vince',
+            '04-06': 'Vilmos, Bíborka', '04-07': 'Herman', '04-08': 'Dénes', '04-09': 'Erhard', '04-10': 'Zsolt',
+            '04-11': 'Leó, Szaniszló', '04-12': 'Gyula', '04-13': 'Ida', '04-14': 'Tibor', '04-15': 'Anasztázia, Tas',
+            '04-16': 'Csongor', '04-17': 'Rudolf', '04-18': 'Andrea, Ilma', '04-19': 'Emma', '04-20': 'Tivadar',
+            '04-21': 'Konrád', '04-22': 'Csilla, Noémi', '04-23': 'Béla', '04-24': 'György', '04-25': 'Márk',
+            '04-26': 'Ervin', '04-27': 'Zita', '04-28': 'Valéria', '04-29': 'Péter', '04-30': 'Katalin, Kitti',
+            '05-01': 'Fülöp, Jakab', '05-02': 'Zsigmond', '05-03': 'Tímea, Irma', '05-04': 'Mónika, Flórián', '05-05': 'Györgyi',
+            '05-06': 'Ivett, Frida', '05-07': 'Gizella', '05-08': 'Mihály', '05-09': 'Gergely', '05-10': 'Ármin, Pálma',
+            '05-11': 'Ferenc', '05-12': 'Pongrác', '05-13': 'Szervác, Imola', '05-14': 'Bonifác', '05-15': 'Zsófia, Szonja',
+            '05-16': 'Mózes, Botond', '05-17': 'Paszkál', '05-18': 'Erik, Alexandra', '05-19': 'Ivó, Milán', '05-20': 'Bernát, Felícia',
+            '05-21': 'Konstantin', '05-22': 'Júlia, Rita', '05-23': 'Dezső', '05-24': 'Eliza, Eszter', '05-25': 'Orbán',
+            '05-26': 'Fülöp, Evelin', '05-27': 'Hella', '05-28': 'Csanád, Emil', '05-29': 'Magdolna', '05-30': 'Zsanett, Janka', '05-31': 'Angéla, Petronella',
+            '06-01': 'Tünde', '06-02': 'Kármen, Anita', '06-03': 'Klotild', '06-04': 'Bulcsú', '06-05': 'Fatime',
+            '06-06': 'Norbert, Cintia', '06-07': 'Róbert', '06-08': 'Medárd', '06-09': 'Félix', '06-10': 'Margit, Gréta',
+            '06-11': 'Barnabás', '06-12': 'Villő', '06-13': 'Antal, Anett', '06-14': 'Vazul', '06-15': 'Jolán, Vid',
+            '06-16': 'Jusztin', '06-17': 'Laura, Alida', '06-18': 'Arnold, Levente', '06-19': 'Gyárfás', '06-20': 'Rafael',
+            '06-21': 'Alajos, Leila', '06-22': 'Paulina', '06-23': 'Zoltán', '06-24': 'Iván', '06-25': 'Vilmos',
+            '06-26': 'János, Pál', '06-27': 'László', '06-28': 'Levente, Irén', '06-29': 'Péter, Pál', '06-30': 'Pál',
+            '07-01': 'Tihamér, Annamária', '07-02': 'Ottó', '07-03': 'Kornél, Soma', '07-04': 'Ulrik', '07-05': 'Emese, Sarolta',
+            '07-06': 'Csaba', '07-07': 'Apollónia', '07-08': 'Ellák', '07-09': 'Lukrécia', '07-10': 'Amália',
+            '07-11': 'Nóra, Lili', '07-12': 'Izabella, Dalma', '07-13': 'Jenő', '07-14': 'Örs, Stella', '07-15': 'Henrik, Roland',
+            '07-16': 'Valter', '07-17': 'Endre, Elek', '07-18': 'Frigyes', '07-19': 'Emília', '07-20': 'Illés',
+            '07-21': 'Dániel, Daniella', '07-22': 'Magdolna', '07-23': 'Lenke', '07-24': 'Kinga, Kincső', '07-25': 'Kristóf, Jakab',
+            '07-26': 'Anna, Anikó', '07-27': 'Olga, Liliána', '07-28': 'Szabolcs', '07-29': 'Márta, Flóra', '07-30': 'Judit, Xénia', '07-31': 'Oszkár',
+            '08-01': 'Boglárka', '08-02': 'Lehel', '08-03': 'Hermina', '08-04': 'Domonkos, Dominika', '08-05': 'Krisztina',
+            '08-06': 'Berta, Bettina', '08-07': 'Ibolya', '08-08': 'László', '08-09': 'Emőd', '08-10': 'Lörinc',
+            '08-11': 'Zsuzsanna, Tiborc', '08-12': 'Klára', '08-13': 'Ipoly', '08-14': 'Marcell', '08-15': 'Mária',
+            '08-16': 'Ábrahám', '08-17': 'Jácint', '08-18': 'Ilona', '08-19': 'Huba', '08-20': 'István',
+            '08-21': 'Sámuel, Hajna', '08-22': 'Menyhért, Mirjam', '08-23': 'Bence', '08-24': 'Bertalan', '08-25': 'Lajos, Patricia',
+            '08-26': 'Izsó', '08-27': 'Gáspár', '08-28': 'Ágoston', '08-29': 'Beatrix, Erna', '08-30': 'Rózsa', '08-31': 'Bella, Erika',
+            '09-01': 'Egyed, Egon', '09-02': 'Rebeka, Dorina', '09-03': 'Hilda', '09-04': 'Rozália', '09-05': 'Viktor, Lőrinc',
+            '09-06': 'Zakariás', '09-07': 'Regina', '09-08': 'Mária, Adrienn', '09-09': 'Ádám', '09-10': 'Nikolett, Hunor',
+            '09-11': 'Teodóra', '09-12': 'Mária', '09-13': 'Kornél', '09-14': 'Roxána, Szeréna', '09-15': 'Enikő, Melitta',
+            '09-16': 'Edit', '09-17': 'Zsófia', '09-18': 'Diána', '09-19': 'Vilhelmina', '09-20': 'Friderika',
+            '09-21': 'Máté, Mirella', '09-22': 'Móric', '09-23': 'Tekla', '09-24': 'Gellért, Mercédesz', '09-25': 'Eufrozina, Kende',
+            '09-26': 'Jusztina', '09-27': 'Adalbert', '09-28': 'Vencel', '09-29': 'Mihály', '09-30': 'Jeromos',
+            '10-01': 'Malvin', '10-02': 'Petra', '10-03': 'Helga', '10-04': 'Ferenc', '10-05': 'Aurél',
+            '10-06': 'Brúnó, Renáta', '10-07': 'Amália', '10-08': 'Koppány', '10-09': 'Dénes', '10-10': 'Gedeon',
+            '10-11': 'Brigitta', '10-12': 'Miksa', '10-13': 'Kálmán, Ede', '10-14': 'Helén', '10-15': 'Teréz',
+            '10-16': 'Gál', '10-17': 'Hedvig', '10-18': 'Lukács', '10-19': 'Nándor', '10-20': 'Vendel',
+            '10-21': 'Orsolya', '10-22': 'Előd', '10-23': 'Gyöngyi', '10-24': 'Salamon', '10-25': 'Bianka, Blanka',
+            '10-26': 'Dömötör', '10-27': 'Szabina', '10-28': 'Simon, Szimonetta', '10-29': 'Nárcisz', '10-30': 'Alfonz', '10-31': 'Farkas',
+            '11-01': 'Marianna', '11-02': 'Achilles', '11-03': 'Gyöngyvér', '11-04': 'Károly', '11-05': 'Imre',
+            '11-06': 'Lénárd', '11-07': 'Rezső', '11-08': 'Zsombor', '11-09': 'Tivadar', '11-10': 'Réka',
+            '11-11': 'Márton', '11-12': 'Jónás, Renátó', '11-13': 'Szilvia', '11-14': 'Aliz', '11-15': 'Albert, Lipót',
+            '11-16': 'Ödön', '11-17': 'Gergő, Hortenzia', '11-18': 'Jenő', '11-19': 'Erzsébet', '11-20': 'Jolán',
+            '11-21': 'Olivér', '11-22': 'Cecília', '11-23': 'Kelemen, Klementina', '11-24': 'Emma', '11-25': 'Katalin',
+            '11-26': 'Virág', '11-27': 'Virgil', '11-28': 'Stefánia', '11-29': 'Taksony', '11-30': 'Andor, András',
+            '12-01': 'Elza', '12-02': 'Melinda, Vivien', '12-03': 'Ferenc, Olívia', '12-04': 'Borbála, Barbara', '12-05': 'Vilma',
+            '12-06': 'Miklós', '12-07': 'Ambrus', '12-08': 'Mária', '12-09': 'Natália', '12-10': 'Judit',
+            '12-11': 'Árpád', '12-12': 'Gabriella', '12-13': 'Luca, Otília', '12-14': 'Szilárda', '12-15': 'Valér',
+            '12-16': 'Etelka, Aletta', '12-17': 'Lázár, Olimpia', '12-18': 'Auguszta', '12-19': 'Viola', '12-20': 'Teofil',
+            '12-21': 'Tamás', '12-22': 'Zéno', '12-23': 'Viktória', '12-24': 'Ádám, Éva', '12-25': 'Eugénia',
+            '12-26': 'István', '12-27': 'János', '12-28': 'Kamilla', '12-29': 'Tamás, Tamara', '12-30': 'Dávid', '12-31': 'Szilveszter'
+        };
+
+        const defaultBecsengetes = [[8, 0], [8, 55], [9, 50], [10, 50], [11, 45], [12, 40], [13, 30], [14, 20]];
+        const defaultKicsengetes = [[8, 45], [9, 40], [10, 35], [11, 35], [12, 30], [13, 25], [14, 15], [15, 5]];
+        const shortBecsengetes = [[8, 0], [8, 40], [9, 20], [10, 0], [10, 40], [11, 20], [11, 55], [12, 30]];
+        const shortKicsengetes = [[8, 30], [9, 10], [9, 50], [10, 30], [11, 10], [11, 50], [12, 25], [13, 0]];
+
+        let becsengetes = JSON.parse(localStorage.getItem('becsengetes')) || JSON.parse(JSON.stringify(defaultBecsengetes));
+        let kicsengetes = JSON.parse(localStorage.getItem('kicsengetes')) || JSON.parse(JSON.stringify(defaultKicsengetes));
+
+        let analogTheme = localStorage.getItem('analogTheme') || 'light';
+        let analogSoundEnabled = localStorage.getItem('analogSoundEnabled') === 'true';
+
+        function toggleAnalogTheme() {
+            const checkbox = document.getElementById('analogThemeToggle');
+            analogTheme = checkbox.checked ? 'dark' : 'light';
+            localStorage.setItem('analogTheme', analogTheme);
+            applyAnalogTheme();
+        }
+
+        let audioCtx;
+
+        function toggleAnalogSound() {
+            const checkbox = document.getElementById('analogSoundToggle');
+            analogSoundEnabled = checkbox.checked;
+            localStorage.setItem('analogSoundEnabled', analogSoundEnabled);
+
+            if (analogSoundEnabled && !audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+
+        function playTick() {
+            if (!analogSoundEnabled || !isAnalog) return;
+
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume().catch(e => console.log(e));
+            }
+
+            try {
+                const t = audioCtx.currentTime;
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                const isTick = new Date().getSeconds() % 2 === 0;
+                osc.frequency.setValueAtTime(isTick ? 800 : 600, t);
+                osc.frequency.exponentialRampToValueAtTime(100, t + 0.03);
+
+                gain.gain.setValueAtTime(0.05, t);
+                gain.gain.exponentialRampToValueAtTime(0.001, t + 0.03);
+
+                osc.start(t);
+                osc.stop(t + 0.03);
+            } catch (e) {
+                console.error("Audio error", e);
+            }
+        }
+
+        function playWarningSound() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume().catch(e => console.log(e));
+            }
+
+            try {
+                const t = audioCtx.currentTime;
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                // Figyelmeztető hang (magasabb pittyegés)
+                osc.frequency.setValueAtTime(1200, t);
+                osc.frequency.exponentialRampToValueAtTime(800, t + 0.1);
+
+                gain.gain.setValueAtTime(0.1, t);
+                gain.gain.exponentialRampToValueAtTime(0.001, t + 0.1);
+
+                osc.start(t);
+                osc.stop(t + 0.1);
+            } catch (e) {
+                console.error("Audio error", e);
+            }
+        }
+
+        function applyAnalogTheme() {
+            const wrapper = document.getElementById('analogClockWrapper');
+            const checkbox = document.getElementById('analogThemeToggle');
+            if (analogTheme === 'dark') {
+                wrapper.classList.add('dark-theme');
+                if (checkbox) checkbox.checked = true;
+            } else {
+                wrapper.classList.remove('dark-theme');
+                if (checkbox) checkbox.checked = false;
+            }
+
+            const soundCheckbox = document.getElementById('analogSoundToggle');
+            if (soundCheckbox) soundCheckbox.checked = analogSoundEnabled;
+        }
+
+        function updateDigitColor() {
+            const now = new Date();
+            const currentMinutes = now.getHours() * 60 + now.getMinutes();
+            let isClass = false;
+
+            for (let i = 0; i < becsengetes.length; i++) {
+                const start = becsengetes[i][0] * 60 + becsengetes[i][1];
+                const end = kicsengetes[i][0] * 60 + kicsengetes[i][1];
+
+                if (currentMinutes >= start && currentMinutes < end) {
+                    isClass = true;
+                    break;
+                }
+            }
+
+            // Piros ha óra van, egyébként zöld
+            const color = isClass ? '#ff4444' : '#4caf50';
+            document.documentElement.style.setProperty('--digit-color', color);
+
+            const background = isClass
+                ? 'linear-gradient(135deg, #501a1a 0%, #2a0a0a 100%)'
+                : 'linear-gradient(135deg, #1a501a 0%, #0a2a0a 100%)';
+            document.body.style.background = background;
+        }
+
+        function updateCountdown() {
+            const now = new Date();
+            const totalSeconds = now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds();
+            let targetTime = -1;
+            let text = '';
+            let nextClassText = '';
+
+            // Check classes
+            for (let i = 0; i < becsengetes.length; i++) {
+                const start = becsengetes[i][0] * 3600 + becsengetes[i][1] * 60;
+                const end = kicsengetes[i][0] * 3600 + kicsengetes[i][1] * 60;
+
+                if (totalSeconds >= start && totalSeconds < end) {
+                    targetTime = end;
+                    text = 'Óra vége:';
+                    if (i + 1 < becsengetes.length) {
+                        nextClassText = `Következő: ${i + 2}. óra`;
+                    } else {
+                        nextClassText = 'Utolsó óra';
+                    }
+                    break;
+                }
+
+                if (i < becsengetes.length - 1) {
+                    const nextStart = becsengetes[i + 1][0] * 3600 + becsengetes[i + 1][1] * 60;
+                    if (totalSeconds >= end && totalSeconds < nextStart) {
+                        targetTime = nextStart;
+                        text = 'Szünet vége:';
+                        nextClassText = `Következő: ${i + 2}. óra`;
+                        break;
+                    }
+                }
+            }
+
+            // Before first class
+            const firstStart = becsengetes[0][0] * 3600 + becsengetes[0][1] * 60;
+            if (totalSeconds < firstStart) {
+                targetTime = firstStart;
+                text = 'Kezdésig:';
+                nextClassText = 'Következő: 1. óra';
+            }
+
+            const el = document.getElementById('countdown');
+            const nextEl = document.getElementById('nextClass');
+
+            if (targetTime !== -1) {
+                const diff = targetTime - totalSeconds;
+                const m = Math.floor(diff / 60);
+                const s = diff % 60;
+                el.textContent = `${text} ${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+                nextEl.textContent = nextClassText;
+
+                if (diff <= 5 && diff > 0) {
+                    playWarningSound();
+                }
+            } else {
+                const lastEnd = kicsengetes[kicsengetes.length - 1][0] * 3600 + kicsengetes[kicsengetes.length - 1][1] * 60;
+                if (totalSeconds >= lastEnd) {
+                    el.textContent = 'Tanítás vége';
+                    nextEl.textContent = '';
+                } else {
+                    el.textContent = '';
+                    nextEl.textContent = '';
+                }
+            }
+        }
+
+        let prevTime = ['0', '0', '0', '0'];
+
+        function updateAnalogClock() {
+            const now = new Date();
+            const seconds = now.getSeconds();
+            const minutes = now.getMinutes();
+            const hours = now.getHours();
+
+            const secDeg = ((seconds / 60) * 360);
+            const minDeg = ((minutes / 60) * 360) + ((seconds / 60) * 6);
+            const hourDeg = ((hours / 12) * 360) + ((minutes / 60) * 30);
+
+            document.getElementById('analogSec').style.transform = `translateX(-50%) rotate(${secDeg}deg)`;
+            document.getElementById('analogMin').style.transform = `translateX(-50%) rotate(${minDeg}deg)`;
+            document.getElementById('analogHour').style.transform = `translateX(-50%) rotate(${hourDeg}deg)`;
+            playTick();
+        }
+
+        function updateClock() {
+            const now = new Date();
+            const h = String(now.getHours()).padStart(2, '0');
+            const m = String(now.getMinutes()).padStart(2, '0');
+
+            const time = [h[0], h[1], m[0], m[1]];
+            const ids = ['hour1', 'hour2', 'min1', 'min2'];
+
+            time.forEach((digit, i) => {
+                if (digit !== prevTime[i]) {
+                    const el = document.getElementById(ids[i]);
+                    el.style.animation = 'none';
+                    setTimeout(() => {
+                        el.textContent = digit;
+                        el.style.animation = 'flip 0.6s ease-in-out';
+                    }, 10);
+                }
+            });
+
+            prevTime = time;
+            updateDigitColor();
+            updateCountdown();
+            updateAnalogClock();
+        }
+
+        function getWeekNumber(d) {
+            d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+            d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));
+            var yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+            var weekNo = Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+            return weekNo;
+        }
+
+        function updateDate() {
+            const now = new Date();
+            const days = ['Vasárnap', 'Hétfő', 'Kedd', 'Szerda', 'Csütörtök', 'Péntek', 'Szombat'];
+            const months = ['január', 'február', 'március', 'április', 'május', 'június',
+                'július', 'augusztus', 'szeptember', 'október', 'november', 'december'];
+
+            const weekNum = getWeekNumber(now);
+            const dateStr = `${now.getFullYear()}. ${months[now.getMonth()]} ${now.getDate()}. (${weekNum}. hét)`;
+            document.getElementById('dateInfo').textContent = dateStr;
+            document.getElementById('dayNameInfo').textContent = days[now.getDay()];
+
+            const key = `${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+            const name = namedays[key] || '';
+            document.getElementById('nameDay').textContent = name ? `${name}` : '';
+        }
+
+        function getWeatherSVG(id) {
+            const sun = `<g><circle cx="32" cy="32" r="12" fill="#ffeb3b"><animateTransform attributeName="transform" type="scale" values="1;1.1;1" dur="3s" repeatCount="indefinite"/></circle><g stroke="#ffeb3b" stroke-width="3" stroke-linecap="round"><line x1="32" y1="8" x2="32" y2="2"/><line x1="32" y1="62" x2="32" y2="56"/><line x1="8" y1="32" x2="2" y2="32"/><line x1="62" y1="32" x2="56" y2="32"/><line x1="15" y1="15" x2="11" y2="11"/><line x1="53" y1="53" x2="49" y2="49"/><line x1="15" y1="49" x2="11" y2="53"/><line x1="53" y1="15" x2="49" y2="11"/><animateTransform attributeName="transform" type="rotate" from="0 32 32" to="360 32 32" dur="20s" repeatCount="indefinite"/></g></g>`;
+            const cloud = `<path d="M46 24c0-6.6-5.4-12-12-12-5.3 0-9.8 3.4-11.4 8.1C21.5 19.7 20.3 19.5 19 19.5c-5.5 0-10 4.5-10 10 0 .4 0 .8.1 1.2C4.9 32.3 2 36.3 2 41c0 5.5 4.5 10 10 10h34c6.6 0 12-5.4 12-12 0-6.2-4.7-11.3-10.8-11.9.5-1.9.8-3.9.8-6.1z" fill="#e0e0e0"><animateTransform attributeName="transform" type="translate" values="0 0; 0 -2; 0 0" dur="3s" repeatCount="indefinite"/></path>`;
+            const rain = `<g stroke="#4fc3f7" stroke-width="2" stroke-linecap="round"><line x1="20" y1="45" x2="16" y2="52"><animate attributeName="y1" values="45;48;45" dur="1s" repeatCount="indefinite"/><animate attributeName="y2" values="52;55;52" dur="1s" repeatCount="indefinite"/></line><line x1="32" y1="45" x2="28" y2="52"><animate attributeName="y1" values="45;48;45" dur="1s" begin="0.3s" repeatCount="indefinite"/><animate attributeName="y2" values="52;55;52" dur="1s" begin="0.3s" repeatCount="indefinite"/></line><line x1="44" y1="45" x2="40" y2="52"><animate attributeName="y1" values="45;48;45" dur="1s" begin="0.6s" repeatCount="indefinite"/><animate attributeName="y2" values="52;55;52" dur="1s" begin="0.6s" repeatCount="indefinite"/></line></g>`;
+            const snow = `<g fill="#fff"><circle cx="20" cy="48" r="2"><animate attributeName="cy" values="45;55" dur="2s" repeatCount="indefinite"/></circle><circle cx="32" cy="48" r="2"><animate attributeName="cy" values="45;55" dur="2s" begin="0.6s" repeatCount="indefinite"/></circle><circle cx="44" cy="48" r="2"><animate attributeName="cy" values="45;55" dur="2s" begin="1.2s" repeatCount="indefinite"/></circle></g>`;
+            const thunder = `<path d="M30 36 L24 48 L30 48 L26 60 L38 46 L32 46 L36 36 Z" fill="#ffeb3b"><animate attributeName="opacity" values="1;0;1;0;1" dur="2s" repeatCount="indefinite"/></path>`;
+            const mist = `<g stroke="#bdbdbd" stroke-width="2" stroke-linecap="round"><line x1="10" y1="25" x2="54" y2="25"><animate attributeName="x1" values="10;15;10" dur="5s" repeatCount="indefinite"/><animate attributeName="x2" values="54;49;54" dur="5s" repeatCount="indefinite"/></line><line x1="15" y1="35" x2="49" y2="35"><animate attributeName="x1" values="15;10;15" dur="4s" repeatCount="indefinite"/><animate attributeName="x2" values="49;54;49" dur="4s" repeatCount="indefinite"/></line><line x1="10" y1="45" x2="54" y2="45"><animate attributeName="x1" values="10;15;10" dur="6s" repeatCount="indefinite"/><animate attributeName="x2" values="54;49;54" dur="6s" repeatCount="indefinite"/></line></g>`;
+
+            let content = '';
+            if (id >= 200 && id < 300) content = cloud + thunder;
+            else if (id >= 300 && id < 600) content = cloud + rain;
+            else if (id >= 600 && id < 700) content = cloud + snow;
+            else if (id >= 700 && id < 800) content = mist;
+            else if (id === 800) content = sun;
+            else if (id === 801) content = `<g transform="translate(8, -8) scale(0.8)">${sun}</g><g transform="translate(0, 10)">${cloud}</g>`;
+            else content = cloud;
+
+            return `<svg viewBox="0 0 64 64" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">${content}</svg>`;
+        }
+
+        async function updateWeather() {
+            try {
+                const apiUrl = 'https://api.openweathermap.org/data/2.5/weather?q=Csorna,HU&appid=999f84c7f5fb31dabe7ca36b796248ea&units=metric&lang=hu';
+                const proxyUrl = 'https://corsproxy.io/?' + encodeURIComponent(apiUrl);
+
+                const response = await fetch(proxyUrl);
+
+                if (!response.ok) {
+                    throw new Error('API hiba');
+                }
+
+                const data = await response.json();
+
+                if (data.main && data.weather) {
+                    const temp = Math.round(data.main.temp);
+                    document.getElementById('temperature').textContent = `${temp} °C`;
+
+                    const weatherId = data.weather[0].id;
+                    document.getElementById('weatherIcon').innerHTML = getWeatherSVG(weatherId);
+                    document.getElementById('weatherDesc').textContent = data.weather[0].description;
+                } else {
+                    document.getElementById('temperature').textContent = 'N/A';
+                    document.getElementById('weatherIcon').textContent = '❓';
+                    document.getElementById('weatherDesc').textContent = 'Nincs adat';
+                }
+            } catch (error) {
+                console.error('Időjárás betöltési hiba:', error);
+                document.getElementById('temperature').textContent = 'Hiba';
+                document.getElementById('weatherIcon').textContent = '⚠️';
+                document.getElementById('weatherDesc').textContent = 'Betöltési hiba';
+            }
+        }
+
+        // Settings logic
+        const settingsBtn = document.getElementById('settingsBtn');
+        const settingsOverlay = document.getElementById('settingsOverlay');
+        const scheduleList = document.getElementById('scheduleList');
+
+        settingsBtn.addEventListener('click', () => {
+            renderSettings();
+            settingsOverlay.style.display = 'flex';
+        });
+
+        window.closeSettings = function () {
+            settingsOverlay.style.display = 'none';
+        }
+
+        function renderSettings() {
+            scheduleList.innerHTML = '';
+            becsengetes.forEach((start, i) => {
+                const end = kicsengetes[i] || [0, 0];
+                const row = document.createElement('div');
+                row.className = 'schedule-row';
+                row.innerHTML = `
+                    <span style="width: 60px;">${i + 1}. óra</span>
+                    <input type="time" value="${formatTime(start)}" class="start-time">
+                    <span>-</span>
+                    <input type="time" value="${formatTime(end)}" class="end-time">
+                    <button class="btn btn-danger" onclick="removePeriod(${i})" style="padding: 5px 10px;">×</button>
+                `;
+                scheduleList.appendChild(row);
+            });
+        }
+
+        function formatTime(arr) {
+            return `${String(arr[0]).padStart(2, '0')}:${String(arr[1]).padStart(2, '0')}`;
+        }
+
+        window.addPeriod = function () {
+            becsengetes.push([0, 0]);
+            kicsengetes.push([0, 0]);
+            renderSettings();
+        }
+
+        window.removePeriod = function (index) {
+            becsengetes.splice(index, 1);
+            kicsengetes.splice(index, 1);
+            renderSettings();
+        }
+
+        window.saveSettings = function () {
+            const rows = document.querySelectorAll('.schedule-row');
+            const newBecsengetes = [];
+            const newKicsengetes = [];
+
+            rows.forEach(row => {
+                const start = row.querySelector('.start-time').value.split(':').map(Number);
+                const end = row.querySelector('.end-time').value.split(':').map(Number);
+                newBecsengetes.push(start);
+                newKicsengetes.push(end);
+            });
+
+            becsengetes = newBecsengetes;
+            kicsengetes = newKicsengetes;
+            localStorage.setItem('becsengetes', JSON.stringify(becsengetes));
+            localStorage.setItem('kicsengetes', JSON.stringify(kicsengetes));
+            closeSettings();
+            updateClock(); // Immediate update
+        }
+
+        window.resetSettings = function () {
+            if (confirm('Biztosan visszaállítod az alapértelmezett csengetési rendet?')) {
+                becsengetes = JSON.parse(JSON.stringify(defaultBecsengetes));
+                kicsengetes = JSON.parse(JSON.stringify(defaultKicsengetes));
+                renderSettings();
+            }
+        }
+
+        window.setShortSchedule = function () {
+            if (confirm('Biztosan átváltasz a rövidített csengetési rendre?')) {
+                becsengetes = JSON.parse(JSON.stringify(shortBecsengetes));
+                kicsengetes = JSON.parse(JSON.stringify(shortKicsengetes));
+                renderSettings();
+            }
+        }
+
+        // Analog Clock Setup
+        function initAnalogClock() {
+            const clock = document.getElementById('analogClock');
+
+            for (let i = 0; i < 60; i++) {
+                const marker = document.createElement('div');
+                marker.className = i % 5 === 0 ? 'marker hour' : 'marker minute';
+                marker.style.transform = `rotate(${i * 6}deg)`;
+                clock.appendChild(marker);
+            }
+
+            for (let i = 1; i <= 12; i++) {
+                const number = document.createElement('div');
+                number.className = 'clock-number';
+                number.textContent = i;
+                const angle = (i * 30) - 90;
+                const rad = angle * (Math.PI / 180);
+                const radius = 38;
+                const left = 50 + (radius * Math.cos(rad));
+                const top = 50 + (radius * Math.sin(rad));
+                number.style.left = `${left}%`;
+                number.style.top = `${top}%`;
+                clock.appendChild(number);
+            }
+        }
+
+        initAnalogClock();
+        applyAnalogTheme();
+
+        // Clock Mode Toggle
+        const clockModeBtn = document.getElementById('clockModeBtn');
+        const flipClockWrapper = document.getElementById('flipClockWrapper');
+        const analogClockWrapper = document.getElementById('analogClockWrapper');
+        let isAnalog = false;
+
+        clockModeBtn.addEventListener('click', () => {
+            isAnalog = !isAnalog;
+            if (isAnalog) {
+                flipClockWrapper.style.display = 'none';
+                analogClockWrapper.style.display = 'flex';
+                clockModeBtn.textContent = '🔢';
+            } else {
+                flipClockWrapper.style.display = 'block';
+                analogClockWrapper.style.display = 'none';
+                clockModeBtn.textContent = '🕒';
+            }
+        });
+
+        const fullscreenBtn = document.getElementById('fullscreenBtn');
+
+        fullscreenBtn.addEventListener('click', () => {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => {
+                    console.log(`Hiba a teljes képernyőre váltáskor: ${err.message}`);
+                });
+            } else {
+                document.exitFullscreen();
+            }
+        });
+
+        document.addEventListener('fullscreenchange', () => {
+            fullscreenBtn.textContent = document.fullscreenElement ? '❌' : '⛶';
+        });
+
+        setInterval(updateClock, 1000);
+        setInterval(updateDate, 60000);
+        setInterval(updateWeather, 1000 * 60 * 30)
+
+        updateClock();
+        updateDate();
+        updateWeather();
+    </script>
+</body>
+
+</html>
