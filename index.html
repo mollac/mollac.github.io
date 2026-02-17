@@ -553,7 +553,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: clamp(22px, 5vmin, 40px);
+            font-size: clamp(24px, 6vmin, 48px);
             font-weight: bold;
             color: black;
             transform: translate(-50%, -50%);
@@ -1134,7 +1134,7 @@
                 number.textContent = i;
                 const angle = (i * 30) - 90;
                 const rad = angle * (Math.PI / 180);
-                const radius = 38;
+                const radius = 42;
                 const left = 50 + (radius * Math.cos(rad));
                 const top = 50 + (radius * Math.sin(rad));
                 number.style.left = `${left}%`;
